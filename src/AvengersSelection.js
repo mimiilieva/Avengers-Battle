@@ -1,13 +1,14 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
-
+import { Redirect } from 'react-router-dom'
 
 class AvengersSelection extends React.Component {
   constructor(){
     super()
     this.state={
       avengersList: [],
+      villainsList: [],
       selectedAvengers: [],
       clicks: 1,
       displayH2: "none",
@@ -16,7 +17,10 @@ class AvengersSelection extends React.Component {
     this.onMouseOut=this.onMouseOut.bind(this)
     this.onMouseOver=this.onMouseOver.bind(this)
     this.handleClick=this.handleClick.bind(this)
+    this.handleButton=this.handleButton.bind(this)
+   
   }
+
     
    onMouseOver(event){
     const el = event.currentTarget
@@ -25,6 +29,7 @@ class AvengersSelection extends React.Component {
       el.style.borderColor = blue
       el.style.borderWidth = width
    }
+
    onMouseOut(event){
     const el = event.currentTarget
     let gray = "#E4E5EB"
@@ -56,23 +61,59 @@ class AvengersSelection extends React.Component {
        selectedAvengers: selectedAvengers,
        clicks: this.state.clicks + 1
       })
-    }    
+    } 
    }
- 
+
+    shuffleVil(arr){
+    var i,
+        j,
+        temp;
+    for (i = arr.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+    return arr;    
+  } 
+   
+  handleButton(){
+    let shuffleVillains = this.shuffleVil(this.state.villainsList)
+    let randomVillains = shuffleVillains.slice(0,3)
+    this.setState({
+      villainsList: randomVillains
+    })
+    // => post method for /battles/
+
+    let id = 1 // id from the post method
+    localStorage.setItem('id', JSON.stringify(id))
+    this.props.history.push('/battle/' + id)
+  }
+  
   componentDidMount(){
     let token = 'Bearer ' + 'H4OUJ19yD5kKFvE31mkAhG0SJocdtqBQ'
+   
+      fetch('http://localhost:3000/avengers',{
+          headers: {
+            Authorization: token
+          }
+        })
+          .then(response => response.json()) //convert data to json 
+          .then(data => this.setState({
+            avengersList: data       
+          }))     
 
-    fetch('http://localhost:3000/avengers',{
-      headers: {
-        Authorization: token
-      }
-    })
-      .then(response => response.json()) //convert data to json 
-      .then(data => this.setState({
-        avengersList: data       
-      }))     
-  }
-  render(){
+      fetch('http://localhost:3000/villains',{
+          headers: {
+            Authorization: token
+           }
+          })
+            .then(response => response.json()) 
+            .then(data => this.setState({
+              villainsList: data       
+            }))               
+      }    
+render(){
    
     return(
       <div className="wrap">
@@ -99,7 +140,7 @@ class AvengersSelection extends React.Component {
               <h2>Your team is ready!</h2>
             </div>
             <div className="col-md-4 offset-md-4">
-              <button className="btn btn-danger btn-rounded btn-lg">Start the battle</button>
+              <button className="btn btn-danger btn-rounded btn-lg" onClick={this.handleButton}>Start the battle</button>
             </div>
           </div>
         </main>

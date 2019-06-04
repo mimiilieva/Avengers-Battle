@@ -3,8 +3,29 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import AvengersSelection from './AvengersSelection';
 import * as serviceWorker from './serviceWorker';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import BattleResults from './BattleResults'
 
-ReactDOM.render(<AvengersSelection />, document.getElementById('root'));
+
+
+class App extends React.Component{
+    constructor(){
+        super()
+    }
+    render(){
+        return(
+            <Switch>
+                <Route exact path="/" component={AvengersSelection}/>
+                <Route path="/battle/:id" component={BattleResults}/>
+            </Switch>
+        )
+    }
+}
+
+
+ReactDOM.render(<BrowserRouter>
+    <App />
+  </BrowserRouter>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
