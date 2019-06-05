@@ -42,5 +42,9 @@ h2{
 
 .wrap{
   text-align: center;
+  font-weight: bold;
 }
 
+li{
+  font-weight:bold;
+}

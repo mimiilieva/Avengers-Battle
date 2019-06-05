@@ -1,7 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
-import { Redirect } from 'react-router-dom'
+
 
 class AvengersSelection extends React.Component {
   constructor(){
@@ -86,7 +86,7 @@ class AvengersSelection extends React.Component {
     // => post method for /battles/
 
     let id = 1 // id from the post method
-    localStorage.setItem('id', JSON.stringify(id))
+    localStorage.setItem('id', JSON.stringify(id)) //Because localStorage can only store strings, arrays and objects need to be passed into JSON.stringify() before being passed to setItem()
     this.props.history.push('/battle/' + id)
   }
   

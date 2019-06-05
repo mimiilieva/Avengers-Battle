@@ -2,9 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import AvengersSelection from './AvengersSelection';
+import BattleResults from './BattleResults';
+import ListOfBattles from './ListOfBattles';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import BattleResults from './BattleResults'
+
 
 
 
@@ -17,6 +19,7 @@ class App extends React.Component{
             <Switch>
                 <Route exact path="/" component={AvengersSelection}/>
                 <Route path="/battle/:id" component={BattleResults}/>
+                <Route path="/battles/" component={ListOfBattles}/>
             </Switch>
         )
     }
